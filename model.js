@@ -29,7 +29,7 @@ export default ClassName
 
 const makeModel = (name) => {
 
-    console.log("Model name: ", name)
+    // console.log("Model name: ", name)
     if (!name) {
         console.log("name is undefined")
         return
@@ -43,20 +43,23 @@ const makeModel = (name) => {
                 console.log("\x1b[31m", "errEnsure", errEnsure, "\x1b[0m")
                 return;
             }
-
+            // add path tree
             let importDBLine = `core/database/database.js"`
             let count = file.split("").filter(c => c === "/").length
-
 
             for (let i = 0; i < count; i++) {
                 importDBLine = `../` + importDBLine
             }
             importDBLine = `import db from "` + importDBLine + `\n`
-
+            
+            // get model name from path
             let names = name.split("/") // Catalog/Product  
             let modelName = names[names.length - 1] // Product
 
+            // change model name
             const content = modelScript().replace(/ClassName/g, modelName)
+            
+            // adding import packages on top of line
             let lines = content.split("\n")
             lines[0] = importDBLine + lines[0]
             updatedContent = lines.join("\n")
