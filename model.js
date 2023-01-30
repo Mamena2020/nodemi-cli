@@ -2,13 +2,10 @@ const fse = require("fs-extra")
 
 
 const modelScript = () => {
-    return `
-import { Model, DataTypes } from "sequelize";
-import db from "../core/database/database.js"
+    return `import { Model, DataTypes } from "sequelize";
 
 
 class ClassName extends Model {
-
 }
 
 ClassName.init({
@@ -16,15 +13,14 @@ ClassName.init({
 // name: {
 //    type: DataTypes.STRING,
 //    allowNull: false
-// },
-
-
-}, 
-{
-   sequelize: db, // We need to pass the connection instance
-   modelName: 'ClassName', // We need to choose the model name
+// }
+ }, 
+ {
+   sequelize: db, 
+   modelName: 'ClassName', 
    timestamps: true
-});
+ }
+);
 
 export default ClassName
     
@@ -33,34 +29,50 @@ export default ClassName
 
 const makeModel = (name) => {
 
-    console.log("name", name)
+    console.log("Model name: ", name)
     if (!name) {
         console.log("name is undefined")
         return
     }
     const file = `models/${name}.js`;
-    let slash = "/";
-    let count = str.split("").filter(c => c === slash).length;
-
-
 
     if (!fse.existsSync(file)) {
 
-        for (let i = 0; i < count; i++) {
-
-        }
-
-        const updatedContent = modelScript().replace(/ClassName/g, name);
-        fse.writeFile(file, updatedContent, (errWrite) => {
-            if (errWrite) {
-                console.error(err);
+        fse.ensureFile(file, (errEnsure) => {
+            if (errEnsure) {
+                console.log("\x1b[31m", "errEnsure", errEnsure, "\x1b[0m")
                 return;
             }
-            console.log(`File created: ${file}`);
-        });
+
+            let importDBLine = `core/database/database.js"`
+            let count = file.split("").filter(c => c === "/").length
+
+
+            for (let i = 0; i < count; i++) {
+                importDBLine = `../` + importDBLine
+            }
+            importDBLine = `import db from "` + importDBLine + `\n`
+
+            let names = name.split("/") // Catalog/Product  
+            let modelName = names[names.length - 1] // Product
+
+            const content = modelScript().replace(/ClassName/g, modelName)
+            let lines = content.split("\n")
+            lines[0] = importDBLine + lines[0]
+            updatedContent = lines.join("\n")
+
+            fse.writeFile(file, updatedContent, (errWrite) => {
+                if (errWrite) {
+                    console.log("\x1b[31m", "errWrite", errWrite, "\x1b[0m")
+                    return;
+                }
+                console.log("\x1b[32m", `File created: ${file}`, "\x1b[0m")
+            });
+        })
+
     }
     else {
-        console.log(`File already exists: ${file}`);
+        console.log("\x1b[31m", `File already exists: ${file}`, "\x1b[0m")
     }
 }
 
