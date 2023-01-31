@@ -1,5 +1,5 @@
 const fse = require("fs-extra")
-//import fse from "fs-extra"
+// import fse from "fs-extra"
 
 
 const scripts = () => {
@@ -79,7 +79,5 @@ const makeRequest = (name) => {
 
 
 
-//export default makeRequest
-
-
+// export default makeRequest
 module.exports = makeRequest
