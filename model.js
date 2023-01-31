@@ -1,4 +1,5 @@
-const fse = require("fs-extra")
+// const fse = require("fs-extra")
+import fse from "fs-extra"
 
 
 const modelScript = () => {
@@ -51,24 +52,25 @@ const makeModel = (name) => {
                 importDBLine = `../` + importDBLine
             }
             importDBLine = `import db from "` + importDBLine + `\n`
-            
+
             // get model name from path
             let names = name.split("/") // Catalog/Product  
             let modelName = names[names.length - 1] // Product
 
-            // change model name
+            // change model name from default script
             const content = modelScript().replace(/ClassName/g, modelName)
-            
+
             // adding import packages on top of line
             let lines = content.split("\n")
             lines[0] = importDBLine + lines[0]
-            updatedContent = lines.join("\n")
+            let updatedContent = lines.join("\n")
 
             fse.writeFile(file, updatedContent, (errWrite) => {
                 if (errWrite) {
                     console.log("\x1b[31m", "errWrite", errWrite, "\x1b[0m")
                     return;
                 }
+                addToCoreModels(modelName, file)
                 console.log("\x1b[32m", `File created: ${file}`, "\x1b[0m")
             });
         })
@@ -79,10 +81,38 @@ const makeModel = (name) => {
     }
 }
 
+const addToCoreModels = (name, pathModel) => {
+
+
+    fse.readFile("core/model/Models.js", "utf-8", (err, data) => {
+        if (err) {
+            console.log("\x1b[31m", "err", err, "\x1b[0m")
+            return;
+        }
+
+
+        let addModule = `import ` + name + ` from "../../` + pathModel + `"\n`
+
+        let addModel = `\n    await ` + name + `.sync()\n\n`
+
+
+        let index = data.lastIndexOf(`}`);
+        if (index !== -1) {
+
+            data = data.substring(0, index) + addModel + data.substring(index);
+            data = addModule + data.substring(0, data.length - 1)
+            fse.writeFile("core/model/Models.js", data, (err) => {
+                if (err) throw err;
+                console.log("Data has been modified successfully");
+            });
+        }
+    })
+}
 
 
 
 
+export default makeModel
 
 
-module.exports = makeModel
+// module.exports = makeModel

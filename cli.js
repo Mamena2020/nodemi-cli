@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
-const program = require('commander')
-const makeModel = require("./model.js")
+import { program } from "commander";
+import makeModel from "./model.js";
 
 
 program
