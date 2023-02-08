@@ -4,12 +4,13 @@ const program = require("commander")
 const makeModel = require("./model.js")
 const makeRequest = require("./request.js")
 const makeResource = require("./resource.js")
+const seeder = require("../seeder/seeder.js")
 
 // import { program } from "commander";
 // import makeModel from "./model.js";
 // import makeRequest from "./request.js";
 // import makeResource from "./resource.js";
-
+// import seeder from "../seeder/seeder.js";
 
 program
     .command('make:model <name>')
@@ -28,5 +29,15 @@ program
     .action((name) => {
         makeResource(name)
     });
+
+program.command('seed:run')
+    .action(() => {
+        console.log("Running seeder")
+        try {
+            seeder()
+        } catch (error) {
+            console.log("\x1b[31m", "error", error, "\x1b[0m")
+        }
+    })
 
 program.parse(process.argv);
