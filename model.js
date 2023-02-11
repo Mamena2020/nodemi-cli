@@ -1,5 +1,4 @@
-const fse = require("fs-extra")
-// import fse from "fs-extra"
+import fse from "fs-extra"
 
 
 const modelScript = () => {
@@ -45,7 +44,7 @@ const makeModel = (name) => {
                 return;
             }
             // add path tree
-            let importDBLine = `core/database/database.js"`
+            let importDBLine = `core/database/Database.js"`
             let count = file.split("").filter(c => c === "/").length
 
             for (let i = 0; i < count; i++) {
@@ -111,7 +110,4 @@ const addToCoreModels = (name, pathModel) => {
 }
 
 
-
-
-// export default makeModel
-module.exports = makeModel
+export default makeModel

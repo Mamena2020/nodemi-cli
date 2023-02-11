@@ -1,16 +1,16 @@
 #!/usr/bin/env node
 
-const program = require("commander")
-const makeModel = require("./model.js")
-const makeRequest = require("./request.js")
-const makeResource = require("./resource.js")
-const seeder = require("../seeder/seeder.js")
+// const program = require("commander")
+// const makeModel = require("./model.js")
+// const makeRequest = require("./request.js")
+// const makeResource = require("./resource.js")
+// const seeder = require("../../core/seeder/seeder.js")
 
-// import { program } from "commander";
-// import makeModel from "./model.js";
-// import makeRequest from "./request.js";
-// import makeResource from "./resource.js";
-// import seeder from "../seeder/seeder.js";
+import { program } from "commander";
+import makeModel from "./model.js";
+import makeRequest from "./request.js";
+import makeResource from "./resource.js";
+import seeder from "../../core/seeder/Seeder.js";
 
 program
     .command('make:model <name>')
@@ -32,7 +32,7 @@ program
 
 program.command('seed:run')
     .action(() => {
-        console.log("Running seeder")
+        console.log("Running seeder...")
         try {
             seeder()
         } catch (error) {

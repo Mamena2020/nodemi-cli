@@ -1,7 +1,8 @@
 {
   "name": "nodemi-cli",
-  "version": "1.0.40",
+  "version": "1.0.43",
   "description": "",
+   "type": "module", 
    "bin": {
     "nodemi": "cli.js"
   },
