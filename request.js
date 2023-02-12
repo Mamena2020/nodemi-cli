@@ -75,4 +75,8 @@ const makeRequest = (name) => {
 }
 
 
+
+
+
 export default makeRequest
+// module.exports = makeRequest

@@ -103,11 +103,14 @@ const addToCoreModels = (name, pathModel) => {
             fse.writeFile("core/model/Models.js", data, (err) => {
                 if (err) throw err;
 
-                console.log("\x1b[32m", `${name} model registered on core/model/models`, "\x1b[0m")
+                console.log("\x1b[32m", `${name} model registered on core/model/Models.js`, "\x1b[0m")
             });
         }
     })
 }
 
 
+
+
 export default makeModel
+// module.exports = makeModel

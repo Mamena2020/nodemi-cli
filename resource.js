@@ -75,4 +75,8 @@ const makeResource = (name) => {
 }
 
 
+
+
+
 export default makeResource
+// module.exports = makeResource
