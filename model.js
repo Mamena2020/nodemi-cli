@@ -70,7 +70,7 @@ const makeModel = (name) => {
                     console.log("\x1b[31m", "errWrite", errWrite, "\x1b[0m")
                     return;
                 }
-                addToCoreModels(modelName, file)
+                addToCoreModels(className, file)
                 console.log("\x1b[32m", `File created: ${file}`, "\x1b[0m")
             });
         })
@@ -81,7 +81,7 @@ const makeModel = (name) => {
     }
 }
 
-const addToCoreModels = (name, pathModel) => {
+const addToCoreModels = (className, pathModel) => {
 
 
     fse.readFile("core/model/Models.js", "utf-8", (err, data) => {
@@ -91,9 +91,9 @@ const addToCoreModels = (name, pathModel) => {
         }
 
 
-        let addModule = `import ` + name + ` from "../../` + pathModel + `"\n`
+        let addModule = `import ` + className + ` from "../../` + pathModel + `"\n`
 
-        let addModel = `\n    await ` + name + `.sync()\n\n`
+        let addModel = `\n    await ` + className + `.sync()\n\n`
 
 
         let index = data.lastIndexOf(`}`);
@@ -104,7 +104,7 @@ const addToCoreModels = (name, pathModel) => {
             fse.writeFile("core/model/Models.js", data, (err) => {
                 if (err) throw err;
 
-                console.log("\x1b[32m", `${name} model registered on core/model/Models.js`, "\x1b[0m")
+                console.log("\x1b[32m", `${className} model registered on core/model/Models.js`, "\x1b[0m")
             });
         }
     })
