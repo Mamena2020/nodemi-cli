@@ -53,12 +53,12 @@ const makeModel = (name) => {
             }
             importDBLine = `import db from "` + importDBLine + `\n`
 
-            // get model name from path
+            // get class name from path
             let names = name.split("/") // Catalog/Product  
-            let modelName = names[names.length - 1] // Product
-            let tableName = makeSnakeCase(modelName)+"s"
-            // change model name from default script
-            const content = modelScript().replace(/ClassName/g, modelName).replace(/TableName/g,tableName)
+            let className = names[names.length - 1] // Product
+            let tableName = makeSnakeCase(className)+"s"
+            // change class name from default script
+            const content = modelScript().replace(/ClassName/g, className).replace(/TableName/g,tableName)
 
             // adding import packages on top of line
             let lines = content.split("\n")
@@ -119,4 +119,3 @@ const makeSnakeCase = (str) => {
 
 
 export default makeModel
-// module.exports = makeModel
